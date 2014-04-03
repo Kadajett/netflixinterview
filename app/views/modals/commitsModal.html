@@ -1,0 +1,39 @@
+<div><div class="modal-header">
+            <h3>Recent Commits!</h3>
+        </div>
+        <div class="modal-body">
+           <!-- <ul class="list-group">
+             <li class="list-group-item" data-ng-repeat="commit in repo.commits">
+               {{commit.commit.author.name}} + {{commit.commit.author.email}}
+             </li>
+           </ul> -->
+
+           <div class="row" >
+             <!--    <hr />
+               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                   Author Name: 
+               </div>
+               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                   Author Email: {{commit.commit.author.email}}
+               </div>
+               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                   <a href="{{commit.html_url}}" target="_blank"><button type="button" class="btn btn-default">button</button></a>
+
+
+               </div> -->
+
+                <accordion close-others="true">
+                     <accordion-group heading="{{commit.commit.message}}"  data-ng-repeat="commit in repo.commits">
+                      This content is straight in the template.
+                    </accordion-group>
+                </accordion>
+
+           </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+        </div>

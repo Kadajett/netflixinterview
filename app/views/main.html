@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row" data-ng-controller="listCtrl">
+
+        
+        <select data-ng-init="order.value ='+forks'" ng-model="order" ng-options="order.value for order in orderList">
+          <option value="">Nill</option>
+        </select>
+        <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i> {{ascend}} </button>
+    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" data-ng-repeat="repo in list | orderBy:order.value">
+
+      
+      <div class="row">
+
+      <div class="panel panel-default">
+        <div class="panel-header">
+          <h3>{{repo.full_name}}</h3>
+        </div>
+        <div class="panel-body">
+           <p>{{repo.description}}</p>
+           <button type="button" class="btn btn-default" data-ng-click="open(repo);">button</button>
+        </div>
+        <div class="panel-footer">
+          <span class="badge"><i class="fa fa-code-fork"></i> {{repo.forks}} </span>
+          <span class="badge"> Rating: <rating value="repo.ranking" readonly="true"></rating>  </span>
+        </div>
+      </div>
+     <!--  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
+        <h3>{{repo.full_name}}</h3>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+
+
+        <p>{{repo.description}}</p> <p>{{repo.ranking}}</p>
+        <hr />
+      </div> -->
+
+      </div>
+    </div>
+  </div>
+</div>
