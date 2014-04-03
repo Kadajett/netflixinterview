@@ -4,6 +4,29 @@ body {
   padding-bottom: 20px;
 }
 
+.fa-4{
+  font-size: 7em !important;
+}
+.grid{
+  height: 300px;
+}
+
+.control{
+  position: fixed;
+  top: 90px;
+  right: 30px;
+  width: 200px;
+}
+
+.effect1{
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+     -moz-box-shadow: 0 10px 6px -6px #777;
+          box-shadow: 0 10px 6px -6px #777;
+}
+.search{
+  margin-bottom: 5px;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

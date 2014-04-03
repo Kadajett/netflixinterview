@@ -27,3 +27,7 @@ A repo for the netflix interview code test.
 - listCtrl
 	- holds the data for the list of organizations
 	- makes them available as an array
+
+- CommitsCtrl
+	- Takes the selected repo from listCtrl and passes it to the $scope
+	- No other logic at the point belongs in this controller

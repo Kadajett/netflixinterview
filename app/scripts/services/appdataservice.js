@@ -49,7 +49,29 @@ angular.module('netflixinterviewApp')
   		 	angular.forEach(d, function(d){
   		 		$http.get('https://api.github.com/repositories/' + d.id + '/commits?top=master')
   		 		.success(function(r){
+  		 			angular.forEach(r, function(d){
+  		 				if(d.commit.message){
+  		 					d.commit.message = d.commit.message.substr(0,90);
+  		 				}
+  		 				else{
+  		 					console.log("r.message", d);
+  		 				}
+  		 				
+  		 			});
   		 			d.commits = r;
+  		 			
+  		 		}).error(function(r){
+  		 			alert(r);
+  		 		})
+  		 	});
+  	}
+  	appDataService.getContribs = function(d){
+  		
+  		angular.forEach(d, function(d){
+  		 		$http.get('https://api.github.com/repos/' + d.full_name + '/collaborators')
+  		 		.success(function(r){
+  		 			d.contributers = r;
+  		 			console.log("Contribs", d.contributers);
   		 			
   		 		}).error(function(r){
   		 			alert(r);
@@ -70,6 +92,7 @@ angular.module('netflixinterviewApp')
   			// appDataService.result = appDataService.formatData(d);
   			// $rootScope.$broadcast('dataLoaded');
   		});
+
 
   	
 

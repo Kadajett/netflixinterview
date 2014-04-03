@@ -1,40 +1,82 @@
 <div class="container">
   <div class="row" data-ng-controller="listCtrl">
 
-        
-        <select data-ng-init="order.value ='+forks'" ng-model="order" ng-options="order.value for order in orderList">
-          <option value="">Nill</option>
-        </select>
-        <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i> {{ascend}} </button>
-    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" data-ng-repeat="repo in list | orderBy:order.value">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+          <h1>NetFlix Repositories!</h1>
+        </div>
+      </div>
+      <div class="control">
+        <div class="panel panel-default effect1 visible-lg ">
+          <div class="panel-header">
+            <span>Control Panel</span>
+          </div>
+          <div class="panel-body">
+            <div class="text-left">
+              <form>
+                <span>Sort By:</span>
+                <div data-ng-repeat="thing in orderList">
+                  <input data-ng-model="$parent.order" type="radio" name="sex" data-ng-value="thing.value" >
+                  {{thing.name}}
+                </div>
+                Ascending:
+                <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i> {{ascend}} </button>  
+                <hr />
+                <div class="input-group">
+                    
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Commits">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>        
+    <div class="row">
+      <br />
+    </div>
+    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:order | filter:filterText">
 
       
       <div class="row">
+      <div class="panel panel-default effect1 hidden-lg ">
+          <div class="panel-header">
+            <span>Control Panel</span>
+          </div>
+          <div class="panel-body">
+            <div class="text-center">
+              <form>
+                <span>Sort By</span>
+                <div data-ng-repeat="thing in orderList">
+                  <input data-ng-model="$parent.order" type="radio" name="sex" data-ng-value="thing.value" >
+                  {{thing.name}}
+                </div>
+                <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i>Ascending: {{ascend}} </button>  
 
-      <div class="panel panel-default">
-        <div class="panel-header">
-          <h3>{{repo.full_name}}</h3>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Commits">
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="panel-body">
-           <p>{{repo.description}}</p>
-           <button type="button" class="btn btn-default" data-ng-click="open(repo);">button</button>
+        <div class="panel panel-default effect1">
+          <div class="panel-header">
+            <h3>{{repo.full_name}}</h3>
+          </div>
+          <div class="panel-body">
+             <p>{{repo.description}}</p>
+             <button type="button" class="btn btn-default" data-ng-click="openCommit(repo);"> <i class="fa fa-eye"></i> View Recent Commits</button>
+             <button type="button" class="btn btn-default" data-ng-click="openContrib(repo);"> <i class="fa fa-users"></i> View Contributers</button>
+          </div>
+          <div class="panel-footer">
+            <span class="badge"><i class="fa fa-code-fork"></i> {{repo.forks}} </span>
+            <span class="badge"> Rating: <rating value="repo.ranking" readonly="true"></rating>  </span>
+          </div>
         </div>
-        <div class="panel-footer">
-          <span class="badge"><i class="fa fa-code-fork"></i> {{repo.forks}} </span>
-          <span class="badge"> Rating: <rating value="repo.ranking" readonly="true"></rating>  </span>
-        </div>
-      </div>
-     <!--  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-left">
-        <h3>{{repo.full_name}}</h3>
-      </div>
-
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-
-
-        <p>{{repo.description}}</p> <p>{{repo.ranking}}</p>
-        <hr />
-      </div> -->
-
       </div>
     </div>
   </div>
