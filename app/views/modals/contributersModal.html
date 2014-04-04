@@ -15,11 +15,11 @@
                 <accordion close-others="true">
                     <accordion-group heading="{{contribs.login}}"  data-ng-repeat="contribs in repo.contributers | filter:filterText">
                         <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">
-                            <span>Users Email: <a href="{{contribs.email}}"> <button type="button" class="btn btn-default"> <i class="fa fa-code-fork"></i> </button> </a> </span>
+                            <span>Users Email: <a href="http://global3.memecdn.com/wtf-internet_o_2113237.webp" target="_blank">Contributers API Doesn't provide email?!?</a></span>
                             <hr />
                             <span>User Type: {{contribs.type}}</span>
                         </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1 col-sm-offset-0 col-lg-offset-0 col-md-offset-0" data-ng-show="contribs.avatar_url">
+                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1 col-sm-offset-0 col-lg-offset-0 col-md-offset-0" data-ng-if="contribs.avatar_url && contribs.avatar_url != ''">
                             <img src="{{contribs.avatar_url}}" class="img-responsive" alt="Image">
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">

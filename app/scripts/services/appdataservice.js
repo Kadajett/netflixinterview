@@ -4,20 +4,27 @@ angular.module('netflixinterviewApp')
   .service('Appdataservice', function Appdataservice($q, $http, $rootScope) {
    var appDataService = this;
    appDataService.result = '';
-
-   appDataService.getData = function(){
+   appDataService.org = 'Netflix'
+   appDataService.getData = function(org){
+   		if(org){
+   			appDataService.org = org;
+   		}
   		appDataService.deferred = $q.defer();
 
-  		 $http.get('https://api.github.com/orgs/Netflix/repos')
+  		 $http.get('https://api.github.com/orgs/'+ appDataService.org + '/repos')
   		 .success(function(data){
   		 	
   		 	
   		 	appDataService.listData = data;
   		 	appDataService.deferred.resolve(data);
   		 	
-  		 }).error(function(data){
+  		 }).error(function(data, status){
   		 	appDataService.deferred.reject(data);
   		 	appDataService.listData = data;
+  		 	if(status = 403){
+  		 		alert(status + " To many api calls, couldn't justify setting up OAuth for a test. Go take a walk.");
+  		 	}
+  		 	
   		 })
 
   		 return appDataService.deferred.promise;
@@ -54,14 +61,14 @@ angular.module('netflixinterviewApp')
   		 					d.commit.message = d.commit.message.substr(0,90);
   		 				}
   		 				else{
-  		 					console.log("r.message", d);
+  		 					
   		 				}
   		 				
   		 			});
   		 			d.commits = r;
   		 			
   		 		}).error(function(r){
-  		 			alert(r);
+  		 			
   		 		})
   		 	});
   	}
@@ -71,26 +78,14 @@ angular.module('netflixinterviewApp')
   		 		$http.get('https://api.github.com/repos/' + d.full_name + '/collaborators')
   		 		.success(function(r){
   		 			d.contributers = r;
-  		 			console.log("Contribs", d.contributers);
-  		 			
   		 		}).error(function(r){
-  		 			alert(r);
+  		 			
   		 		})
   		 	});
   	}
   	
   		appDataService.getData().then(function(d){
-  			// for (var i = d.length - 1; i <= 0; i--) {
-  		 // 		$http.get('https://api.github.com/repositories/' + d[i].id + '/commits?top=master')
-  		 // 		.success(function(r){
-  		 // 			d[i].commits = r;
-  		 			
-  		 // 		}).error(function(d){
-  		 // 			alert(d);
-  		 // 		})
-  		 // 	};
-  			// appDataService.result = appDataService.formatData(d);
-  			// $rootScope.$broadcast('dataLoaded');
+  		
   		});
 
 

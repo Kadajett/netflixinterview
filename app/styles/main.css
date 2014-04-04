@@ -2,6 +2,7 @@
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+  background-color: #292C37;
 }
 
 .fa-4{
@@ -11,6 +12,17 @@ body {
   height: 300px;
 }
 
+.jumbotron .input-group{
+  font-size: 14px !important;
+}
+
+.input-group-addon{
+  background-color:#292C37;
+  color:white;
+}
+.badge{
+  background-color: #292C37;
+}
 .control{
   position: fixed;
   top: 90px;
@@ -27,6 +39,10 @@ body {
   margin-bottom: 5px;
 }
 
+.netflix{
+  background-color:#9F111B;
+  color:white;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

@@ -8,6 +8,16 @@ angular.module('netflixinterviewApp')
   	$scope.ascend = true;
   	$scope.order = '';
   	$scope.filterText = '';
+  	$scope.org = 'Netflix';
+  	Appdataservice.org = $scope.org;
+
+  	$scope.newOrg = function(){
+  		Appdataservice.getData($scope.org).then(function(d){
+	  		Appdataservice.getCommits(d)
+	  		Appdataservice.getContribs(d);
+	  		$scope.list = Appdataservice.formatData(d);
+  		})
+  	}
   	
   	
   	
@@ -18,7 +28,6 @@ angular.module('netflixinterviewApp')
   	
   		
   		$scope.list = Appdataservice.formatData(d);
-  		console.log($scope.list);
   	})
   			
   	/**
