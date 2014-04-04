@@ -52,7 +52,7 @@ angular.module('netflixinterviewApp')
           appDataService.deferred.reject(data);
           appDataService.listData = data;
           if(status = 403){
-            alert(status + appDataService.ref + " To many api calls, go take a walk... And then come back. or your org doesn't exist.");
+            alert("Org Doesn't Exist! Oh No!");
             appDataService.oauth();
           }
           
