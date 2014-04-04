@@ -2,15 +2,32 @@
 
 angular.module('netflixinterviewApp')
   .controller('listCtrl', function ( $scope, Appdataservice, $modal) {
-  		
-  	$scope.max = 5;
-  	$scope.rating = 0;
   	$scope.ascend = true;
   	$scope.order = '';
   	$scope.filterText = '';
+  	// Handles the organization Could really be in a contrl controller
   	$scope.org = 'Netflix';
   	Appdataservice.org = $scope.org;
+  	// END
 
+  	/**
+  	 * Init is a function that calls all the other functions needed to start the applicaiton
+  	 * They are here for code cleanliness mostly.
+  	 * @return {NULL} [NULL]
+  	 */
+  	var init = function(){
+  		$scope.switchAscend();
+		$scope.order = $scope.orderList[0].value;
+  	}
+
+  	/**
+  	 * @title newOrg()
+  	 *
+  	 * newOrg takes user input for grabbing a different organization.
+  	 * calls the getData() process again with the new org. 
+  	 * 
+  	 * @return {[type]} [description]
+  	 */
   	$scope.newOrg = function(){
   		Appdataservice.getData($scope.org).then(function(d){
 	  		Appdataservice.getCommits(d)
@@ -21,7 +38,12 @@ angular.module('netflixinterviewApp')
   	
   	
   	
-  		
+  	/**
+  	 * I put this out of desparity. 
+  	 * I wanted to be able to make a different call stack 
+  	 * based on the controller. 
+  	 * If List controller wasn't the only one I mean.
+  	 */
   	Appdataservice.getData().then(function(d){
   		Appdataservice.getCommits(d)
   		Appdataservice.getContribs(d);
@@ -104,8 +126,7 @@ angular.module('netflixinterviewApp')
 		}
 	}
 
-	$scope.switchAscend();
-	$scope.order = $scope.orderList[0].value;
+
 
   });
 
