@@ -11,8 +11,9 @@
       </div>
       <div class="input-group">
           <span>Change your Organization: </span>
-          <span class="input-group-addon" data-ng-click="newOrg()"><i class="fa fa-search"></i></span>
-          <input data-ng-model="org" type="text" class="form-control" placeholder="Search Organizations">
+          <span class="input-group-addon" data-ng-click="newOrg()" ><i class="fa fa-search"></i></span>
+          <input data-ng-model="org" type="text" class="form-control" placeholder="Search Organizations" ui-keyup="{13:newOrg()}" >
+
         </div>
     </div>
 
@@ -45,6 +46,10 @@
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Repos">
                 </div>
+                <hr />
+                <button type="button" class="btn btn-default" data-ng-click="auth()">Auth to Github <i class="fa fa-github"></i></button>
+                <hr />
+                <button type="button" class="btn btn-default" data-ng-click="openHelp()">Need Help <i class="fa fa-question"></i> </button>
               </form>
             </div>
           </div>
@@ -54,11 +59,7 @@
     <div class="row">
       <br />
     </div>
-    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:order | filter:filterText">
-
-      
-      <div class="row">
-      <div class="panel panel-default effect1 hidden-lg ">
+    <div class="panel panel-default effect1 hidden-lg ">
           <div class="panel-header">
             <span>Control Panel</span>
           </div>
@@ -80,6 +81,10 @@
             </div>
           </div>
         </div>
+    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:order | filter:filterText">
+
+      
+      <div class="row">
         <div class="panel panel-default effect1">
           <div class="panel-header">
             <h3>{{repo.full_name}}</h3>

@@ -6,8 +6,30 @@ angular.module('netflixinterviewApp')
    appDataService.result = '';
    appDataService.org = 'Netflix'
    appDataService.max = 5;
+   appDataService.ref = '';
 
-   /**
+  
+  appDataService.setOrg = function(org){
+    appDataService.org = org;
+    
+
+  }
+   
+   appDataService.oauth = function () {
+    if(!appDataService.ref){
+      
+      OAuth.initialize('o4UWv7GYcMgYsqunPgURZkzTztA');
+      OAuth.popup('github', function(err, result) {
+        if (err) {
+          
+          return;
+        }
+        appDataService.ref = result.access_token;
+      });
+    }
+   }
+
+    /**
     * The Big Kahuna
     * This makes all the magic happen
     * pulling in data form the github api
@@ -15,29 +37,32 @@ angular.module('netflixinterviewApp')
     * @return {[Promise]}     [A promise of the inital repos pull. 
     * The deferred promise calls formatData and getContribs after the data is accessed]
     */
-   appDataService.getData = function(org){
-   		if(org){
-   			appDataService.org = org;
-   		}
-  		appDataService.deferred = $q.defer();
+   appDataService.getData = function(){
+      
+      appDataService.deferred = $q.defer();
+     		 
+          $http.get('https://api.github.com/orgs/'+ appDataService.org + '/repos?access_token=' + appDataService.ref)
+         .success(function(data){
+          
+          
+          appDataService.listData = data;
+          appDataService.deferred.resolve(data);
+          
+         }).error(function(data, status){
+          appDataService.deferred.reject(data);
+          appDataService.listData = data;
+          if(status = 403){
+            alert(status + appDataService.ref + " To many api calls, go take a walk... And then come back. or your org doesn't exist.");
+            appDataService.oauth();
+          }
+          
+         })
+         return appDataService.deferred.promise;
+        
+    		
 
-  		 $http.get('https://api.github.com/orgs/'+ appDataService.org + '/repos')
-  		 .success(function(data){
-  		 	
-  		 	
-  		 	appDataService.listData = data;
-  		 	appDataService.deferred.resolve(data);
-  		 	
-  		 }).error(function(data, status){
-  		 	appDataService.deferred.reject(data);
-  		 	appDataService.listData = data;
-  		 	if(status = 403){
-  		 		alert(status + " To many api calls, go take a walk... And then come back. or your org doesn't exist.");
-  		 	}
-  		 	
-  		 })
-
-  		 return appDataService.deferred.promise;
+    		
+    	
 
   	}
   	/**
@@ -75,9 +100,10 @@ angular.module('netflixinterviewApp')
   	 */
   	appDataService.getCommits = function(d) {
   		
+      
 
   		 	angular.forEach(d, function(d){
-  		 		$http.get('https://api.github.com/repositories/' + d.id + '/commits?top=master')
+  		 		$http.get('https://api.github.com/repositories/' + d.id + '/commits?top=master&access_token=' + appDataService.ref)
   		 		.success(function(r){
   		 			angular.forEach(r, function(d){
   		 				if(d.commit.message){
@@ -94,6 +120,8 @@ angular.module('netflixinterviewApp')
   		 			
   		 		})
   		 	});
+      
+      
   	}
 
   	/**
@@ -106,18 +134,16 @@ angular.module('netflixinterviewApp')
   	appDataService.getContribs = function(d){
   		
   		angular.forEach(d, function(d){
-  		 		$http.get('https://api.github.com/repos/' + d.full_name + '/collaborators')
+  		 		$http.get('https://api.github.com/repos/' + d.full_name + '/collaborators?access_token=' + appDataService.ref)
   		 		.success(function(r){
   		 			d.contributers = r;
   		 		}).error(function(r){
   		 			
   		 		})
   		 	});
+      
   	}
   	
-  		appDataService.getData().then(function(d){
-  		
-  		});
 
 
   	

@@ -18,6 +18,8 @@ angular.module('netflixinterviewApp')
   	var init = function(){
   		$scope.switchAscend();
 		$scope.order = $scope.orderList[0].value;
+    Appdataservice.setOrg($scope.org);
+    
   	}
 
   	/**
@@ -29,28 +31,23 @@ angular.module('netflixinterviewApp')
   	 * @return {[type]} [description]
   	 */
   	$scope.newOrg = function(){
-  		Appdataservice.getData($scope.org).then(function(d){
-	  		Appdataservice.getCommits(d)
-	  		Appdataservice.getContribs(d);
-	  		$scope.list = Appdataservice.formatData(d);
-  		})
+      
+      if(Appdataservice.ref){
+        
+        Appdataservice.setOrg($scope.org);
+        
+    		Appdataservice.getData($scope.org).then(function(d){
+  	  		Appdataservice.getCommits(d)
+  	  		Appdataservice.getContribs(d);
+  	  		$scope.list = Appdataservice.formatData(d);
+    		})
+      }
   	}
   	
+  	$scope.auth = function(){
+      Appdataservice.oauth();
+    }
   	
-  	
-  	/**
-  	 * I put this out of desparity. 
-  	 * I wanted to be able to make a different call stack 
-  	 * based on the controller. 
-  	 * If List controller wasn't the only one I mean.
-  	 */
-  	Appdataservice.getData().then(function(d){
-  		Appdataservice.getCommits(d)
-  		Appdataservice.getContribs(d);
-  	
-  		
-  		$scope.list = Appdataservice.formatData(d);
-  	})
   			
   	/**
   	 * @title openCommit
@@ -79,6 +76,7 @@ angular.module('netflixinterviewApp')
   	 * @return {[type]}      [returns the active repository to CommitCtrl]
   	 */
 	$scope.openContrib = function (repo) {
+
 	     $modal.open({
 	      templateUrl: '/views/modals/contributersModal.html',
 	      controller: 'ContribCtrl',
@@ -90,6 +88,11 @@ angular.module('netflixinterviewApp')
 	    });
   	};
 
+    $scope.openHelp = function(){
+      $modal.open({
+        templateUrl: '/views/modals/helpModal.html'
+      });
+    }
 
 	/**
 	 * [switchAscend description]
