@@ -3,7 +3,7 @@
 angular.module('netflixinterviewApp')
   .controller('ControlpanelCtrl', function ($scope, Appdataservice, Controlpanelservice, $modal) {
     $scope.ascend = true;
-    $scope.filterText = '';
+    
     $scope.hideControl = false;
     $scope.authed = Appdataservice.authed;
 	$scope.order = {};

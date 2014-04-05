@@ -10,6 +10,7 @@ angular.module('netflixinterviewApp')
 			{value:'ranking'},
 			{value:'stargazers_count'}
 			];
+    controlPanelService.filterText = '';
 			
     return controlPanelService;
   });

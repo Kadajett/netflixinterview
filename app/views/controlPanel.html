@@ -18,7 +18,7 @@
                 <div class="input-group">
 
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                    <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Repos">
+                    <input data-ng-model="control.filterText" type="text" class="form-control" placeholder="Search Repos">
                 </div>
                 <hr />
                 <button type="button" class="btn " data-ng-class="{ 'btn-danger':!authed,'btn-success':authed}" data-ng-click="auth()">Auth to Github <i class="fa fa-github"></i></button>
