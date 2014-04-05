@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Controller: UserinputctrlCtrl', function () {
+describe('Controller: ControlpanelCtrl', function () {
 
   // load the controller's module
   beforeEach(module('netflixinterviewApp'));
 
-  var UserinputctrlCtrl,
+  var ControlpanelCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    UserinputctrlCtrl = $controller('UserinputctrlCtrl', {
+    ControlpanelCtrl = $controller('ControlpanelCtrl', {
       $scope: scope
     });
   }));

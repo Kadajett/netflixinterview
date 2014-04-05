@@ -1,4 +1,4 @@
-<div class="panel panel-default effect1 ">
+<div class="panel panel-default effect1 " data-ng-controller="ControlpanelCtrl">
           <div class="panel-header">
             <span>Control Panel <button type="button" class="btn btn-default" data-ng-click="toggleControl()"><i class="fa fa-eye"></i></button></span>
           </div>
@@ -6,13 +6,14 @@
             <div class="text-left">
               <form>
                 <span>Sort By:</span>
-                <div data-ng-repeat="thing in orderList">
+                <div data-ng-repeat="thing in control.orderList">
                  
-                  <input id="{{thing.value}}"class="radio" data-ng-model="$parent.order" type="radio" data-ng-value="thing.value" >
-                  <label for="{{thing.value}}">{{thing.name}}</label>
+                  <input id="{{thing.value}}"class="radio" data-ng-model="control.order.value" data-ng-change="updateOrder()" type="radio" data-ng-value="thing.value">
+                  <label for="{{thing.value}}">{{thing.value}}</label>
                 </div>
                 Ascending:
-                <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i> {{ascend}} </button>  
+
+                <button data-ng-init="switchAscend()" type="button" class="btn btn-default" data-ng-click="switchAscend()"><i class="fa fa-sort-amount-asc"></i> {{control.ascend}} </button>  
                 <hr />
                 <div class="input-group">
 

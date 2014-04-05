@@ -1,22 +1,29 @@
 'use strict';
 
-describe('Controller: ListctrlCtrl', function () {
+describe('Controller: listCtrl', function () {
 
   // load the controller's module
   beforeEach(module('netflixinterviewApp'));
 
-  var ListctrlCtrl,
+  var listCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ListctrlCtrl = $controller('ListctrlCtrl', {
+    listCtrl = $controller('listCtrl', {
       $scope: scope
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  //Switching the scope.ascend variable
+  it('scope.ascend should be true, then switchAscend is called and scope.ascend should be false', function () {
+    expect(scope.ascend).toBe(true);
+    scope.switchAscend();
+    expect(scope.ascend).toBe(false);
   });
+
+  
+
+
 });

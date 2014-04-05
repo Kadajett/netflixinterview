@@ -1,33 +1,20 @@
 'use strict';
 
 angular.module('netflixinterviewApp')
-  .controller('listCtrl', function ( $scope, Appdataservice, $modal) {
-  	$scope.ascend = true;
-  	$scope.order = '';
-  	$scope.filterText = '';
+  .controller('listCtrl', function ( $scope, Appdataservice, $modal, Controlpanelservice) {
+  	
+  	
+  	
   	// Handles the organization Could really be in a contrl controller
   	$scope.org = '';
   	Appdataservice.org = $scope.org;
-    $scope.authed = Appdataservice.authed;
-    $scope.hideControl = false;
+    
+    
 
   	// END
 
 
-    $scope.toggleControl = function(){
-      $scope.hideControl = !$scope.hideControl;
-    }
-  	/**
-  	 * Init is a function that calls all the other functions needed to start the applicaiton
-  	 * They are here for code cleanliness mostly.
-  	 * @return {NULL} [NULL]
-  	 */
-  	var init = function(){
-  		$scope.switchAscend();
-		$scope.order = $scope.orderList[0].value;
-    Appdataservice.setOrg($scope.org);
-    
-  	}
+   $scope.control = Controlpanelservice;
 
   	/**
   	 * @title newOrg()
@@ -51,22 +38,7 @@ angular.module('netflixinterviewApp')
       }
   	}
   	
-    /**
-     * @title
-     *   auth()
-     *  @description 
-     *  This is just a wrapper for the auth call
-     *  Waits till the auth is done, then sets the 
-     *  HUD for auth to true or false.
-     * @return {NULL} [NULLL]
-     */
-  	$scope.auth = function(){
-      Appdataservice.oauth().then(function(data){
-        $scope.authed = data;
-      });
-      
-    }
-  	
+    
   			
   	/**
   	 * @title openCommit
@@ -110,52 +82,8 @@ angular.module('netflixinterviewApp')
 	    });
   	};
 
-    /**
-     * @title openHelp()
-     * @description jsut a scope funciton to open the help modal
-     * Could be moved to a controlBox Controller
-     * @return {NULL} NULL
-     */
-    $scope.openHelp = function(){
-      $modal.open({
-        templateUrl: '/views/modals/helpModal.html'
-      });
-    }
-
-	/**
-	 * [switchAscend description]
-	 * @return {[NULL]} [description]
-	 */
-	$scope.switchAscend = function(){
-		$scope.ascend = !$scope.ascend;
-
-		// Makes sure the orderBy selector stays in the same position
-		// through the switch
-		// I dislike how I solved this
-		// Will look into a more elegant fix.
-		if($scope.order == '+forks'){$scope.order = '-forks'}
-		else if($scope.order == '-forks'){$scope.order = '+forks'}
-
-		else if($scope.order == '+ranking'){$scope.order = '-ranking'}
-		else if($scope.order == '-ranking'){$scope.order = '+ranking'}
-
-		else if($scope.order == '+watchers_count'){$scope.order = '-watchers_count'}
-		else if($scope.order == '-watchers_count'){$scope.order = '+watchers_count'}
-
-		// Handles the switching of the orderBy Values
-		if($scope.ascend == true){
-			$scope.orderList = [{value:'+forks', name:'forks'},
-			{value:'+ranking', name:'ranking'},
-			{value:'+watchers_count', name:'watchers'}
-			];
-		}
-		else {
-			$scope.orderList = [{value:'-forks', name:'forks'},
-			{value:'-ranking', name:'ranking'},
-			{value:'-watchers_count', name:'watchers'}
-			];
-		}
-	}
+   
+	
 
 
 

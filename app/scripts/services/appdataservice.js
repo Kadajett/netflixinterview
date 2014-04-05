@@ -1,25 +1,40 @@
 'use strict';
 
 angular.module('netflixinterviewApp')
-  .service('Appdataservice', function Appdataservice($q, $http, $rootScope) {
+  .service('Appdataservice', function Appdataservice($q, $http, $rootScope, Dataformattedservice) {
    var appDataService = this;
    appDataService.result = '';
-   appDataService.org = 'Netflix'
+   appDataService.org = ''
    appDataService.max = 5;
    appDataService.authed = false;
    appDataService.ref = '';
+   appDataService.orderBy == '';
 
-  
+  /**
+   * @title setOrg()
+   * @description Changes the organization searched by the user
+   * The reason this function exists, as opposed to two way data binding
+   * is because it would be combursome to make a call to github whenever 
+   * the user changed the org value. 
+   * @param {[type]} org [description]
+   */
   appDataService.setOrg = function(org){
     appDataService.org = org;
-    
-
   }
-   
-   appDataService.oauth = function () {
+  
+  /**
+   * @title oauth()
+   * @description oauth makes the call to authio which is an authentication service
+   * I went this route, because it seemed a little out of scope of the project 
+   * to work on a node chunk to handle authentication. 
+   * I could have handled this clien side, but then privacy.
+   * @return {promise} [A promise watching for succeeded authentication]
+   */
+  appDataService.oauth = function () {
     var defer = $q.defer();
+    // if the application has NOT been authenticated.
     if(!appDataService.ref){
-      
+      // The key is my oauth public key. No biggie ;)
       OAuth.initialize('o4UWv7GYcMgYsqunPgURZkzTztA');
       OAuth.popup('github', function(err, result) {
         if (err) {
@@ -31,11 +46,10 @@ angular.module('netflixinterviewApp')
         appDataService.ref = result.access_token;
         defer.resolve(true);
         return defer.promise;
-        
       });
     }
     return defer.promise;
-   }
+  }
 
     /**
     * The Big Kahuna
@@ -47,32 +61,23 @@ angular.module('netflixinterviewApp')
     */
    appDataService.getData = function(){
       
-      appDataService.deferred = $q.defer();
-     		 
-          $http.get('https://api.github.com/orgs/'+ appDataService.org + '/repos?access_token=' + appDataService.ref)
-         .success(function(data){
-          
-          
-          appDataService.listData = data;
-          appDataService.deferred.resolve(data);
-          
-         }).error(function(data, status){
-          appDataService.deferred.reject(data);
-          appDataService.listData = data;
-          if(status = 403){
-            alert("Org Doesn't Exist! Oh No!");
-            appDataService.oauth();
-          }
-          
-         })
-         return appDataService.deferred.promise;
-        
-    		
+    appDataService.deferred = $q.defer();
 
-    		
-    	
+      $http.get('https://api.github.com/orgs/'+ appDataService.org + '/repos?access_token=' + appDataService.ref)
+      .success(function(data){
+        appDataService.listData = data;
+        appDataService.deferred.resolve(data);
+      }).error(function(data, status){
+        appDataService.deferred.reject(data);
+        appDataService.listData = data;
 
-  	}
+        if(status = 403){
+          alert("Org Doesn't Exist! Oh No!");
+          appDataService.oauth();
+        }
+      })
+      return appDataService.deferred.promise;
+    }
   	/**
   	 * Format data is used to take the initial response from github, 
   	 * and format it however the dom needs it.
@@ -117,10 +122,9 @@ angular.module('netflixinterviewApp')
   		 				if(d.commit.message){
   		 					d.commit.message = d.commit.message.substr(0,90);
   		 				}
-  		 				else{
-  		 					
-  		 				}
-  		 				
+              //sends the dates to get formatted. Kind of like a slaughter house really.
+              //Its quite sad.
+              d.commit.author.date = Dataformattedservice.formatDate(d.commit.author.date);
   		 			});
   		 			d.commits = r;
   		 			

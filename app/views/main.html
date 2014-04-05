@@ -37,7 +37,8 @@
       
     </div>
 
-    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:order | filter:filterText">
+
+    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:control.order.value:control.ascend | filter:filterText">
 
       
       <div class="row">
@@ -53,6 +54,7 @@
           <div class="panel-footer">
             <span class="badge"><i class="fa fa-code-fork"></i> {{repo.forks}} </span>
             <span class="badge"> Rating: <rating value="repo.ranking" readonly="true"></rating>  </span>
+            <span class="badge"><i class="fa fa-star">{{repo.stargazers_count}}</i></span>
           </div>
         </div>
       </div>

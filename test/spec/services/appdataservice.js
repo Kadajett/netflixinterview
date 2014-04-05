@@ -11,8 +11,6 @@ describe('Service: Appdataservice', function () {
     Appdataservice = _Appdataservice_;
   }));
 
-  it('should do something', function () {
-    expect(!!Appdataservice).toBe(true);
-  });
+  
 
 });

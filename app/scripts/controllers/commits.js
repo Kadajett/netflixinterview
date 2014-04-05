@@ -15,6 +15,5 @@
 angular.module('netflixinterviewApp')
   .controller('CommitsCtrl', function ($scope, repo) {
   	$scope.filterText = '';
-    $scope.repo = repo;
-
+   	$scope.repo = repo;
   });

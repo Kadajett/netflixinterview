@@ -1,30 +1,24 @@
 'use strict';
 
 angular.module('netflixinterviewApp')
-  .service('Dataformattedservice', function Dataformattedservice(Appdataservice, $rootScope) {
+  .service('Dataformattedservice', function Dataformattedservice() {
     
-  	var dataFormattedService = this;
-
-    dataFormattedService.originalList;
-    dataFormattedService.formattedList;
+    var dataFormattedService = this;
 
     dataFormattedService.init = function(){
     	
     	
     }
 
-    $rootScope.$on('dataLoaded', function(){
-    	dataFormattedService.originalList = Appdataservice.results;
-    })
+    dataFormattedService.formatDate = function(date){
+        date = date.replace('T', ' Time:');
+        date = date.replace('Z', '');
+        date = "date: ".concat(date);
+        return date;
+    }
 	
 		
 
-    dataFormattedService.stars = function(list){
-    	for (var i = list.length - 1; i >= 0; i--) {
-    		list[i].description = 'poop';
-    	};
-    	return list;
-    }
 
     
     dataFormattedService.init();
