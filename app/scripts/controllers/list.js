@@ -6,12 +6,17 @@ angular.module('netflixinterviewApp')
   	$scope.order = '';
   	$scope.filterText = '';
   	// Handles the organization Could really be in a contrl controller
-  	$scope.org = 'Netflix';
+  	$scope.org = '';
   	Appdataservice.org = $scope.org;
     $scope.authed = Appdataservice.authed;
+    $scope.hideControl = false;
 
   	// END
 
+
+    $scope.toggleControl = function(){
+      $scope.hideControl = !$scope.hideControl;
+    }
   	/**
   	 * Init is a function that calls all the other functions needed to start the applicaiton
   	 * They are here for code cleanliness mostly.
@@ -46,6 +51,15 @@ angular.module('netflixinterviewApp')
       }
   	}
   	
+    /**
+     * @title
+     *   auth()
+     *  @description 
+     *  This is just a wrapper for the auth call
+     *  Waits till the auth is done, then sets the 
+     *  HUD for auth to true or false.
+     * @return {NULL} [NULLL]
+     */
   	$scope.auth = function(){
       Appdataservice.oauth().then(function(data){
         $scope.authed = data;
@@ -75,10 +89,13 @@ angular.module('netflixinterviewApp')
 
   	/**
   	 * @title openContrib
-  	 * @type {}
+  	 * @description
+     * Opens up the contributer modal
+     * passes in the repo to pull the 
+     * contributers from
   	 * 
-  	 * @param  {[type]} repo [description]
-  	 * @return {[type]}      [returns the active repository to CommitCtrl]
+  	 * @param  {array} repo the selected repository to pull the contribs from
+  	 * @return {repo} [returns the active repository to CommitCtrl,]
   	 */
 	$scope.openContrib = function (repo) {
 
@@ -93,6 +110,12 @@ angular.module('netflixinterviewApp')
 	    });
   	};
 
+    /**
+     * @title openHelp()
+     * @description jsut a scope funciton to open the help modal
+     * Could be moved to a controlBox Controller
+     * @return {NULL} NULL
+     */
     $scope.openHelp = function(){
       $modal.open({
         templateUrl: '/views/modals/helpModal.html'

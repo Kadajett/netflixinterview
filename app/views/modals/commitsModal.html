@@ -18,15 +18,15 @@
                 <accordion close-others="true">
                     <accordion-group heading="{{commit.commit.message}}"  data-ng-repeat="commit in repo.commits | filter:filterText">
                         <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">
-                            <span>Author Email: {{commit.commit.author.email}}</span>
+                            <span class="wrap">Author Email: {{commit.commit.author.email}}</span>
                             <hr />
-                            <span>Author Name: {{commit.commit.author.name}}</span>
+                            <span class="wrap">Author Name: {{commit.commit.author.name}}</span>
                             <hr />
                             <span>Date: {{commit.commit.author.date}}</span>
                             
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1 col-sm-offset-0 col-lg-offset-0 col-md-offset-0" data-ng-show="commit.author.avatar_url">
-                            <img src="{{commit.author.avatar_url}}" class="img-responsive" alt="Image">
+                            <a href="http://github.com/{{commit.committer.login}}" target="_blank">View Committer<img src="{{commit.author.avatar_url}}" class="img-responsive" alt="Image"></a>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                             <a href="{{commit.html_url}}" target="_blank">
