@@ -6,6 +6,7 @@ angular.module('netflixinterviewApp')
    appDataService.result = '';
    appDataService.org = 'Netflix'
    appDataService.max = 5;
+   appDataService.authed = false;
    appDataService.ref = '';
 
   
@@ -16,17 +17,24 @@ angular.module('netflixinterviewApp')
   }
    
    appDataService.oauth = function () {
+    var defer = $q.defer();
     if(!appDataService.ref){
       
       OAuth.initialize('o4UWv7GYcMgYsqunPgURZkzTztA');
       OAuth.popup('github', function(err, result) {
         if (err) {
-          
-          return;
+          appDataService.authed = false;
+          defer.reject(false);
+          return defer.promise;
         }
+        appDataService.authed = true;
         appDataService.ref = result.access_token;
+        defer.resolve(true);
+        return defer.promise;
+        
       });
     }
+    return defer.promise;
    }
 
     /**

@@ -8,6 +8,8 @@ angular.module('netflixinterviewApp')
   	// Handles the organization Could really be in a contrl controller
   	$scope.org = 'Netflix';
   	Appdataservice.org = $scope.org;
+    $scope.authed = Appdataservice.authed;
+
   	// END
 
   	/**
@@ -45,7 +47,10 @@ angular.module('netflixinterviewApp')
   	}
   	
   	$scope.auth = function(){
-      Appdataservice.oauth();
+      Appdataservice.oauth().then(function(data){
+        $scope.authed = data;
+      });
+      
     }
   	
   			
