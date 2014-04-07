@@ -22,8 +22,4 @@ describe('Controller: listCtrl', function () {
     scope.switchAscend();
     expect(scope.ascend).toBe(false);
   });
-
-  
-
-
 });

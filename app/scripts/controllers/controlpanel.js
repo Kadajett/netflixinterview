@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('netflixinterviewApp')
-  .controller('ControlpanelCtrl', function ($scope, Appdataservice, Controlpanelservice, $modal) {
+  .controller('ControlpanelCtrl', function ($scope, Appdataservice, Controlpanelservice, $modal, $position) {
     $scope.ascend = true;
     
     $scope.hideControl = false;
@@ -47,7 +47,7 @@ angular.module('netflixinterviewApp')
       $scope.showAuthTool = true
       Appdataservice.oauth().then(function(data){
         $scope.authed = data;
-        
+
       });
       
     }
