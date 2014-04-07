@@ -4,8 +4,7 @@ angular.module('netflixinterviewApp')
   .service('Appdataservice', function Appdataservice($q, $http, $rootScope, Dataformattedservice) {
    var appDataService = this;
    appDataService.result = '';
-   appDataService.org = ''
-   appDataService.max = 5;
+   appDataService.org = '';
    appDataService.authed = false;
    appDataService.ref = '';
    appDataService.orderBy == '';
@@ -68,9 +67,8 @@ angular.module('netflixinterviewApp')
         appDataService.listData = data;
         appDataService.deferred.resolve(data);
       }).error(function(data, status){
-        appDataService.deferred.reject(data);
-        appDataService.listData = data;
-
+        appDataService.listData = '';
+        appDataService.deferred.reject([]);
         if(status = 403){
           alert("Org Doesn't Exist! Oh No!");
           appDataService.oauth();
@@ -85,54 +83,36 @@ angular.module('netflixinterviewApp')
   	 * @return {list of repos}      [returns the formatted list of repos. Simple.]
   	 */
   	appDataService.formatData = function(list){
-  		var highestWatcher = 0;
-  		for (var i = list.length - 1; i >= 0; i--) {
-    		list[i].watchers_count = parseFloat(list[i].watchers_count);
-    		if(list[i].watchers_count > highestWatcher){
-    			highestWatcher = list[i].watchers_count;
-    		}
-    	};
-
-    	for (var i = list.length - 1; i >= 0; i--) {
-    		list[i].ranking = (list[i].watchers_count / highestWatcher) * appDataService.max;
-    		
-    	};
-
-
-
-    	return list;
+    	return Dataformattedservice.getRanking(list);
   	}
 
   	/**
   	 * Get commits just waits until the initial repo list is downloaded, and then makes a call to 
   	 * the commits list and injects it into each repo accordingly
+     * I am getting a 409 conflict error here. I should really intercept it, 
+     * but I want to know why I am not getting the same error in the getContribs()... 
   	 * @param  {List of repos} d [A list of repos lonely without its list of commits]
   	 * @return {List of repos}   [It doesn't really return, just makes the repo list less lonely with a list of commits!]
   	 */
   	appDataService.getCommits = function(d) {
-  		
-      
-
-  		 	angular.forEach(d, function(repo){
-  		 		$http.get('https://api.github.com/repositories/' + repo.id + '/commits?top=master&access_token=' + appDataService.ref)
-  		 		.success(function(r){
-  		 			angular.forEach(r, function(commitD){
-  		 				if(commitD.commit.message){
-  		 					commitD.commit.message = commitD.commit.message.substr(0,90);
-  		 				}
-              //sends the dates to get formatted. Kind of like a slaughter house really.
-              //Its quite sad.
-              commitD.commit.author.date = Dataformattedservice.formatDate(commitD.commit.author.date);
-  		 			});
-  		 			repo.commits = r;
-  		 		}).error(function(data, status){
-  		 			if(status == '409'){
-              repo.noCommits = true;
-            }
-  		 		})
-  		 	});
-      
-      
+  	 	angular.forEach(d, function(repo){
+  	 		$http.get('https://api.github.com/repositories/' + repo.id + '/commits?access_token=' + appDataService.ref)
+  	 		.success(function(r){
+  	 			angular.forEach(r, function(commitD){
+  	 				if(commitD.commit.message){
+  	 					commitD.commit.message = commitD.commit.message.substr(0,90);
+  	 				}
+            //sends the dates to get formatted. Kind of like a slaughter house really.
+            //Its quite sad.
+            commitD.commit.author.date = Dataformattedservice.formatDate(commitD.commit.author.date);
+  	 			});
+  	 			repo.commits = r;
+  	 		}).error(function(data, status){
+  	 			if(status == '409'){
+            repo.noCommits = true;
+          }
+  	 		})
+  	 	});
   	}
 
   	/**
@@ -154,15 +134,22 @@ angular.module('netflixinterviewApp')
               d.noContribs = true;
             }else{
               d.contributers = r;
-              
               d.noContribs = false;
               angular.forEach(d.contributers, function(contrib){
                 if(!contrib.avatar_url){
                   contrib.avatar_url = 'http://lorempixel.com/output/animals-q-c-460-460-4.jpg';
                 }
+                // Get followers
+                $http.get(contrib.followers_url + '?access_token=' + appDataService.ref)
+                .success(function(followers){
+                  contrib.followerCount = followers.length;
+                }).error(function(){
+                  // don't know what I would do with this error...
+                  // Tested tons of users, this never returned as a 404 or 409. I think 
+                  // I am good here. Very Nice!
+                })
               })
             }
-  		 			
   		 		}).error(function(data, status){
   		 			d.noContribs = true;
   		 		})

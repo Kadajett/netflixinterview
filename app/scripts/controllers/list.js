@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('netflixinterviewApp')
-  .controller('listCtrl', function ( $scope, Appdataservice, $modal, Controlpanelservice) {
+  .controller('listCtrl', function ( $scope, Appdataservice, $modal, Controlpanelservice, $timeout) {
   	
   	
   	
   	// Handles the organization Could really be in a contrl controller
   	$scope.org = '';
+    $scope.searched = false;
   	Appdataservice.org = $scope.org;
     
     
@@ -16,6 +17,12 @@ angular.module('netflixinterviewApp')
 
    $scope.control = Controlpanelservice;
 
+   $scope.changedOrgSearch = function(){
+    // just a timer to wait for the data to be pulled back in. 
+    // I was seeing my no repositories message for a split second here.
+   $scope.searched = false
+    
+   }
   	/**
   	 * @title newOrg()
   	 *
@@ -35,7 +42,12 @@ angular.module('netflixinterviewApp')
   	  		Appdataservice.getContribs(d);
   	  		$scope.list = Appdataservice.formatData(d);
     		})
+         $timeout(function(){
+          $scope.searched = true;
+        }, 500);
       }
+
+       
   	}
   	
     

@@ -6,7 +6,7 @@
     <div class="jumbotron netflix">
       <div class="container">
          <p class="headerText">Auth to github on the right, click the text below to change your organization.</p>
-         <input data-ng-model="org" type="text" class="invisiform" placeholder="Type Here To Search" ui-keypress="{13:'keypressCallback(newOrg())'}" >
+         <input data-ng-model="org" data-ng-change="changedOrgSearch()" type="text" class="invisiform" placeholder="Type Here To Search" ui-keypress="{13:'keypressCallback(newOrg())'}" >
 
          <br />
          <p class="headerText">Press Enter to Search</p>
@@ -38,7 +38,7 @@
     </div>
 
 
-    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-repeat="repo in list | orderBy:control.order.value:control.ascend | filter:control.filterText">
+    <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center " data-ng-if="list" data-ng-repeat="repo in list | orderBy:control.order.value:control.ascend | filter:control.filterText">
 
       
       <div class="row">
@@ -50,6 +50,10 @@
              <p>{{repo.description}}</p>
              <button type="button" class="btn btn-default" data-ng-click="openCommit(repo);"> <i class="fa fa-eye"></i> View Recent Commits</button>
              <button type="button" class="btn btn-default" data-ng-click="openContrib(repo);"> <i class="fa fa-users"></i> View Contributers</button>
+             <a href="{{repo.html_url}}" target="_blank">
+               <button type="button" class="btn btn-default"> <i class="fa fa-github-alt"></i> View this repository!</button>
+             </a>
+
           </div>
           <div class="panel-footer">
             <span class="badge"><i class="fa fa-code-fork"></i> {{repo.forks}} </span>
@@ -58,6 +62,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div data-ng-if="list.length == 0 && searched">
+      <p class="text-center">The organization you have searched for exists, but there are no commits here. <i class="fa fa-exclamation-triangle"></i></p>
     </div>
   </div>
 </div>
