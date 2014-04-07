@@ -6,9 +6,10 @@ angular.module('netflixinterviewApp')
     
     $scope.hideControl = false;
     $scope.authed = Appdataservice.authed;
-	$scope.order = {};
-	$scope.control = Controlpanelservice;
+	  $scope.order = {};
+	  $scope.control = Controlpanelservice;
     $scope.control.order = $scope.order.value;
+    $scope.showAuthTool = false;
 
     /**
      * @title init()
@@ -43,8 +44,10 @@ angular.module('netflixinterviewApp')
      * @return {NULL} [NULLL]
      */
   	$scope.auth = function(){
+      $scope.showAuthTool = true
       Appdataservice.oauth().then(function(data){
         $scope.authed = data;
+        
       });
       
     }
