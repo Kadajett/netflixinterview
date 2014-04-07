@@ -1,19 +1,19 @@
 <div>
     <div class="modal-header">
     <button type="button" class="btn btn-default pull-right" data-ng-click="$close()"><i class="fa fa-times"></i></button>
-        <h3>Recent Commits for {{repo.full_name}}</h3>
+        <h3>Contributers for {{repo.full_name}}</h3>
     </div>
     <div class="modal-body">
 
         <div class="row" >
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 search">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 search"  data-ng-if="!repo.noContribs">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Commits">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <accordion close-others="true">
+                <accordion close-others="true" data-ng-if="!repo.noContribs">
                     <accordion-group heading="{{contribs.login}}"  data-ng-repeat="contribs in repo.contributers | filter:filterText">
                         <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">
                             <span>Users Email: <a href="http://global3.memecdn.com/wtf-internet_o_2113237.webp" target="_blank">Contributers API Doesn't provide email?!?</a></span>
@@ -21,7 +21,7 @@
                             <span>User Type: {{contribs.type}}</span>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1 col-sm-offset-0 col-lg-offset-0 col-md-offset-0" data-ng-if="contribs.avatar_url && contribs.avatar_url != ''">
-                            <img src="{{contribs.avatar_url}}" class="img-responsive" alt="Image">
+                            <img data-ng-src="{{contribs.avatar_url}}" class="img-responsive" alt="Image">
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                             <a href="{{contribs.html_url}}" target="_blank">
@@ -31,6 +31,9 @@
                         </div>
                     </accordion-group>
                 </accordion>
+                <div data-ng-if="repo.noContribs">
+                    <p class="text-center">Sorry, no contributers in this repository!</p>
+                </div>
             </div>
         </div>
     </div>

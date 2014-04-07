@@ -81,8 +81,6 @@ angular.module('netflixinterviewApp')
   	/**
   	 * Format data is used to take the initial response from github, 
   	 * and format it however the dom needs it.
-  	 * I really don't like how unflexible this function is. 
-  	 * Work on it later? ;)
   	 * @param  {List of repos} list [Just a list of repos that get looped through and get formatted]
   	 * @return {list of repos}      [returns the formatted list of repos. Simple.]
   	 */
@@ -115,21 +113,22 @@ angular.module('netflixinterviewApp')
   		
       
 
-  		 	angular.forEach(d, function(d){
-  		 		$http.get('https://api.github.com/repositories/' + d.id + '/commits?top=master&access_token=' + appDataService.ref)
+  		 	angular.forEach(d, function(repo){
+  		 		$http.get('https://api.github.com/repositories/' + repo.id + '/commits?top=master&access_token=' + appDataService.ref)
   		 		.success(function(r){
-  		 			angular.forEach(r, function(d){
-  		 				if(d.commit.message){
-  		 					d.commit.message = d.commit.message.substr(0,90);
+  		 			angular.forEach(r, function(commitD){
+  		 				if(commitD.commit.message){
+  		 					commitD.commit.message = commitD.commit.message.substr(0,90);
   		 				}
               //sends the dates to get formatted. Kind of like a slaughter house really.
               //Its quite sad.
-              d.commit.author.date = Dataformattedservice.formatDate(d.commit.author.date);
+              commitD.commit.author.date = Dataformattedservice.formatDate(commitD.commit.author.date);
   		 			});
-  		 			d.commits = r;
-  		 			
-  		 		}).error(function(r){
-  		 			
+  		 			repo.commits = r;
+  		 		}).error(function(data, status){
+  		 			if(status == '409'){
+              repo.noCommits = true;
+            }
   		 		})
   		 	});
       
@@ -148,9 +147,24 @@ angular.module('netflixinterviewApp')
   		angular.forEach(d, function(d){
   		 		$http.get('https://api.github.com/repos/' + d.full_name + '/collaborators?access_token=' + appDataService.ref)
   		 		.success(function(r){
-  		 			d.contributers = r;
-  		 		}).error(function(r){
+            // For whatever reason, the API isn't returning a 409 on no contributers like it does 
+            // for no commits. I should really complain ;)
+            // Until it is resolved, this if/else will have to work
+            if(r.length == 0){
+              d.noContribs = true;
+            }else{
+              d.contributers = r;
+              
+              d.noContribs = false;
+              angular.forEach(d.contributers, function(contrib){
+                if(!contrib.avatar_url){
+                  contrib.avatar_url = 'http://lorempixel.com/output/animals-q-c-460-460-4.jpg';
+                }
+              })
+            }
   		 			
+  		 		}).error(function(data, status){
+  		 			d.noContribs = true;
   		 		})
   		 	});
       

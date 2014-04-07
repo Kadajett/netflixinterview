@@ -8,14 +8,14 @@
     <div class="modal-body">
 
         <div class="row" >
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 search">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 search" data-ng-if="!repo.noCommits">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                     <input data-ng-model="filterText" type="text" class="form-control" placeholder="Search Commits">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <accordion close-others="true">
+                <accordion data-ng-if="!repo.noCommits" close-others="true">
                     <accordion-group heading="{{commit.commit.message}}"  data-ng-repeat="commit in repo.commits | filter:filterText">
                         <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">
                             <span class="wrap">Author Email: {{commit.commit.author.email}}</span>
@@ -26,7 +26,7 @@
                             
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xs-offset-1 col-sm-offset-0 col-lg-offset-0 col-md-offset-0" data-ng-show="commit.author.avatar_url">
-                            <a href="http://github.com/{{commit.committer.login}}" target="_blank">View Committer<img src="{{commit.author.avatar_url}}" class="img-responsive" alt="Image"></a>
+                            <a href="http://github.com/{{commit.committer.login}}" target="_blank">View Committer<img data-ng-src="{{commit.author.avatar_url}}" class="img-responsive" alt="Image"></a>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                             <a href="{{commit.html_url}}" target="_blank">
@@ -36,6 +36,11 @@
                         </div>
                     </accordion-group>
                 </accordion>
+                <div data-ng-if="repo.noCommits">
+                    <p class="text-center">
+                        Sorry, there are no commits available for this repository.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
