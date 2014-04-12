@@ -34,7 +34,7 @@ angular.module('netflixinterviewApp')
     // if the application has NOT been authenticated.
     if(!appDataService.ref){
       // The key is my oauth public key. No biggie ;)
-      OAuth.initialize('o4UWv7GYcMgYsqunPgURZkzTztA');
+      OAuth.initialize('yS73PzxQMd_0x9mpfQv8NK-u470');
       OAuth.popup('github', function(err, result) {
         if (err) {
           appDataService.authed = false;
